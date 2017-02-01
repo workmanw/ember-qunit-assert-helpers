@@ -1,6 +1,6 @@
 # ember-qunit-assert-helpers
 
-This addon provides additional QUnit 2.0 assertions that are specific to Ember.js.
+This addon provides additional QUnit 2.0 assertions that are specific to Ember.js. It is meant to be a replacement for [ember-dev](https://github.com/emberjs/ember-dev) which only supports QUnit 1.0.
 
 Can be use in your application or an addon.
 
@@ -31,6 +31,21 @@ test('triggers Ember.assert', function(assert) {
 })
 ```
 
+
+### `Ember.run` Assertions
+
+`assert.expectNoRunLoop()`
+
+Asserts that there is not a current run loop running and there are no scheduled timers. If there are, they will be cleaned up.
+
+```javascript
+test('`Ember.deprecate` was called anytime during the test and matched', function(assert) {
+  Ember.run.later(() => { });
+  assert.expectNoRunLoop(); // Fail
+});
+```
+
+
 ### `Ember.deprecate` Assertions
 
 `assert.expectDeprecation(callback, matcher)`
@@ -40,16 +55,21 @@ Asserts that `Ember.deprecate` was called. An optional callback can be provided.
 ```javascript
 test('`Ember.deprecate` was called anytime during the test', function(assert) {
   // ...
+
+  // One or more deprecations were triggered since the start of this test
   assert.expectDeprecation();
 });
 
 test('`Ember.deprecate` was called in a callback', function(assert) {
   assert.expectDeprecation(() => {
-    // Code triggers Ember.deprecate
+    // Code triggers one or more Ember.deprecate
   });
 });
 
 test('`Ember.deprecate` was called anytime during the test and matched', function(assert) {
+  // ...
+
+  // One or more deprecations matching a specific message were triggered since the start of this test
   assert.expectAssertion(/expected deprecation message/);
 });
 
@@ -67,20 +87,18 @@ test('`Ember.deprecate` was called in a callback', function(assert) {
 
 Asserts that `Ember.deprecate` was not called. An optional callback can be provided. An optional matcher can also be provided.
 
-### `Ember.run` Assertions
-
-`assert.expectNoRunLoop()`
-
-Asserts that there is not a current run loop running and there are no scheduled timers. If there are, they will be cleaned up.
-
 ```javascript
-test('`Ember.deprecate` was called anytime during the test and matched', function(assert) {
-  Ember.run.later(() => { });
-  assert.expectNoRunLoop(); // Fail
+test('`Ember.deprecate` was not called anytime during the test', function(assert) {
+  // ...
+
+  // No deprecations were triggered since the start of this test
+  assert.expectNoDeprecation();
 });
 ```
 
 ### `Ember.warn` Assertions
+
+*Same as `Ember.deprecate`, but for warnings. Above code samples can be applied here.*
 
 `assert.expectWarning(callback, matcher)`
 
@@ -111,4 +129,4 @@ moduleForComponent('x-foo', {
 
 Thanks to Robert Jackson ([@rwjblue](https://github.com/rwjblue)) for providing guidance on the implementation.
 
-Credit goes [ember-dev](https://github.com/emberjs/ember-dev) for the overall concept and much the API provided by this addon.
+Credit goes [ember-dev](https://github.com/emberjs/ember-dev) and [CrowdStrike](https://www.crowdstrike.com/) for the overall concept and much the API provided by this addon.
