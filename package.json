@@ -1,6 +1,6 @@
 {
   "name": "ember-qunit-assert-helpers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An ember-addon that provides additional QUnit 2.0 assertions specific to Ember.js.",
   "keywords": [
     "ember-addon"
