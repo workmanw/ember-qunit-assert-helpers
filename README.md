@@ -70,7 +70,7 @@ test('`Ember.deprecate` was called anytime during the test and matched', functio
   // ...
 
   // One or more deprecations matching a specific message were triggered since the start of this test
-  assert.expectAssertion(/expected deprecation message/);
+  assert.expectDeprecation(/expected deprecation message/);
 });
 
 test('`Ember.deprecate` was called in a callback', function(assert) {
