@@ -1,6 +1,12 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
+import { QUnitAdapter } from 'ember-qunit';
 
+let TestAdapter = QUnitAdapter.extend({
+  exception(error) {
+    this.lastError = error;
+  }
+});
 
 export default function() {
   let isProductionBuild = (function() {
@@ -14,12 +20,18 @@ export default function() {
   })();
 
   QUnit.assert.expectAssertion = function(cb, matcher) {
+    // Save off the original adapter and replace it with a test one.
+    let origTestAdapter = Ember.Test.adapter;
+    Ember.run(() => { Ember.Test.adapter = TestAdapter.create(); });
+
     let error = null;
     try {
-			cb();
-		} catch (e) {
-			error = e;
-		}
+      cb();
+    } catch (e) {
+      error = e;
+    } finally {
+      error = error || Ember.Test.adapter.lastError;
+    }
 
     let isEmberError = error instanceof Ember.Error;
     let matches = Boolean(isEmberError && error.message.match(matcher));
@@ -39,5 +51,11 @@ export default function() {
         message: matcher ? 'Ember.assert matched specific message' : 'Ember.assert called with any message'
       });
     }
+
+    // Cleanup the test adapter and restore the original.
+    Ember.run(() => {
+      Ember.Test.adapter.destroy();
+      Ember.Test.adapter = origTestAdapter;
+    });
   };
 }

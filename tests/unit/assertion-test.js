@@ -2,8 +2,7 @@ import Ember from 'ember';
 import { test } from 'ember-qunit';
 import moduleForAssert from '../helpers/module-for-assert';
 
-
-moduleForAssert('Assertion');
+moduleForAssert('Assertion', { integration: false });
 
 test('expectAssertion called with assert', function(assert) {
   assert.expectAssertion(() => {
