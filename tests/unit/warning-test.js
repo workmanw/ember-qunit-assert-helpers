@@ -3,7 +3,7 @@ import { test } from 'ember-qunit';
 import moduleForAssert from '../helpers/module-for-assert';
 
 
-moduleForAssert('Warning Assert');
+moduleForAssert('Warning Assert', { integration: false });
 
 test('expectWarning called after test and with warning', function(assert) {
   Ember.warn('Something warned', false, { id: 'warning-test', until: '3.0.0' });

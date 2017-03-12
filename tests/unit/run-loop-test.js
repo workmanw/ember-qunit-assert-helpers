@@ -3,7 +3,7 @@ import { test } from 'ember-qunit';
 import moduleForAssert from '../helpers/module-for-assert';
 
 
-moduleForAssert('Run Loop Assert');
+moduleForAssert('Run Loop Assert', { integration: false });
 
 test('`expectNoRunLoop` in a run loop', function(assert) {
   Ember.run.begin();

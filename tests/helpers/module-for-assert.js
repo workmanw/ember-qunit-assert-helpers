@@ -1,8 +1,10 @@
+import { moduleForComponent } from 'ember-qunit';
 import { module } from 'qunit';
 
 
 export default function(name, options = {}) {
-  module(name, {
+  let opts = {
+    integration: options.integration,
     beforeEach(assert) {
       let originalPushResult = assert.pushResult;
       this.pushedResults = [];
@@ -30,5 +32,12 @@ export default function(name, options = {}) {
         return options.afterEach.apply(this, arguments);
       }
     }
-  });
+  };
+
+  if (opts.integration) {
+    // Really we just want to use an integration loop, but we have to have a target for the moduleFor.
+    moduleForComponent('component:x-assert-helpers', name, opts);
+  } else {
+    module(name, opts);
+  }
 }

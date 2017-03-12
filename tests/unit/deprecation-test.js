@@ -3,7 +3,7 @@ import { test } from 'ember-qunit';
 import moduleForAssert from '../helpers/module-for-assert';
 
 
-moduleForAssert('Deprecation Assert');
+moduleForAssert('Deprecation Assert', { integration: false });
 
 test('expectDeprecation called after test and with deprecation', function(assert) {
   Ember.deprecate('Something deprecated', false, { id: 'deprecation-test', until: '3.0.0' });
