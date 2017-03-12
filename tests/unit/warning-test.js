@@ -2,6 +2,10 @@ import Ember from 'ember';
 import { test } from 'ember-qunit';
 import moduleForAssert from '../helpers/module-for-assert';
 
+// ............................................................
+// Warning outside of a test. Should not cause test failures.
+Ember.warn('Warning outside of a test', false, { id: 'warning-test', until: '3.0.0' });
+// ............................................................
 
 moduleForAssert('Warning Assert', { integration: false });
 
