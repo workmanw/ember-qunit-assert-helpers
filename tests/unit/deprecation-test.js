@@ -2,6 +2,10 @@ import Ember from 'ember';
 import { test } from 'ember-qunit';
 import moduleForAssert from '../helpers/module-for-assert';
 
+// ............................................................
+// Deprecation outside of a test. Should not cause test failures.
+Ember.deprecate('Deprecation outside of a test', false, { id: 'deprecation-test', until: '3.0.0' });
+// ............................................................
 
 moduleForAssert('Deprecation Assert', { integration: false });
 

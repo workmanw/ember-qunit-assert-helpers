@@ -10,7 +10,10 @@ export default function() {
   });
 
   Ember.Debug.registerDeprecationHandler(function(message, options, next) {
-    deprecations.push({ message, options });
+    // It's possible for deprecations to trigger before the test has started.
+    if (deprecations) {
+      deprecations.push({ message, options });
+    }
     next(message, options);
   });
 

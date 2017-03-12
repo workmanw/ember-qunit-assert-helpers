@@ -10,7 +10,10 @@ export default function() {
   });
 
   Ember.Debug.registerWarnHandler(function(message, options, next) {
-    warnings.push({ message, options });
+    // It's possible for warnings to trigger before the test has started.
+    if (warnings) {
+      warnings.push({ message, options });
+    }
     next(message, options);
   });
 
