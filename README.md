@@ -17,7 +17,7 @@ ember install ember-qunit-assert-helpers
 
 `assert.expectAssertion(callback, matcher)`
 
-Asserts that `Ember.assert` did throw an error. An optional matcher can be provided to match a specific error message.
+Asserts that `Ember.assert` did throw an error. An optional regular expression matcher can be provided to match a specific error message.
 
 ```javascript
 test('triggers Ember.assert', function(assert) {
@@ -26,8 +26,8 @@ test('triggers Ember.assert', function(assert) {
   });
 
   assert.expectAssertion(() => {
-    Ember.assert('You forgot the required parameter');
-  }, 'required parameter');
+    Ember.assert('You forgot "bar", the required parameter');
+  }, /You forgot "\w+", the required parameter/);
 })
 ```
 
