@@ -26,3 +26,24 @@ test('Check for assert', function(assert) {
 
   assert.ok(this.pushedResults[0].result, '`expectWarning` captured warning call');
 });
+
+test('Does not log caught assertions', function(assert) {
+  let origTestemConsoleHandler = Testem.handleConsoleMessage;
+  try {
+    let errorCalled = false;
+    Testem.handleConsoleMessage = () => {
+      errorCalled = true;
+    };
+
+    assert.expectAssertion(() => {
+      this.render(hbs`{{x-assert-test}}`);
+    }, /x-assert-test will always assert/);
+
+    // Restore the asserts (removes the mocking)
+    this.restoreAsserts();
+
+    assert.equal(errorCalled, false, 'assertion was not logged');
+  } finally {
+    Testem.handleConsoleMessage = origTestemConsoleHandler;
+  }
+});
