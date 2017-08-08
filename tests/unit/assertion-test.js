@@ -37,7 +37,6 @@ test('expectAssertion called with deprecation and matched assert', function(asse
   assert.ok(this.pushedResults[0].result, '`expectAssertion` captured deprecation call');
 });
 
-
 test('expectAssertion called with deprecation and unmatched assert', function(assert) {
   assert.expectAssertion(() => {
     Ember.assert('testing assert');

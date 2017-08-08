@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
 import { QUnitAdapter } from 'ember-qunit';
+import { checkMatcher } from '../-private/utils';
+
 
 let TestAdapter = QUnitAdapter.extend({
   exception(error) {
@@ -40,7 +42,7 @@ export default function() {
     }
 
     let isEmberError = error instanceof Ember.Error;
-    let matches = Boolean(isEmberError && error.message.match(matcher));
+    let matches = Boolean(isEmberError && checkMatcher(error.message, matcher));
 
     if (isProductionBuild) {
       this.pushResult({

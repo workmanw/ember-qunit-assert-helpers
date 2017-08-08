@@ -160,3 +160,34 @@ test('expectNoDeprecation called with callback and after test', function(assert)
   assert.notOk(this.pushedResults[0].result, 'first `expectNoDeprecation` caught logged failed result');
   assert.ok(this.pushedResults[1].result, 'second `expectNoDeprecation` caught no deprecation');
 });
+
+test('expectDeprecation with regex matcher', function(assert) {
+  assert.expectDeprecation(() => {
+    Ember.deprecate('Something deprecated', false, { id: 'deprecation-test', until: '3.0.0' });
+  }, /Somethi[a-z ]*ecated/);
+  assert.expectDeprecation(() => {
+    Ember.deprecate('/Something* deprecated/', false, { id: 'deprecation-test', until: '3.0.0' });
+  }, /Something* deprecated/);
+
+  // Restore the asserts (removes the mocking)
+  this.restoreAsserts();
+
+  assert.ok(this.pushedResults[0].result, '`expectDeprecation` matched RegExp');
+  assert.notOk(this.pushedResults[1].result, '`expectDeprecation` didn\'t RegExp as String match');
+});
+
+test('expectDeprecation with string matcher', function(assert) {
+  assert.expectDeprecation(() => {
+    Ember.deprecate('Something deprecated', false, { id: 'deprecation-test', until: '3.0.0' });
+  }, 'Something');
+
+  assert.expectDeprecation(() => {
+    Ember.deprecate('Something deprecated', false, { id: 'deprecation-test', until: '3.0.0' });
+  }, 'Something.*');
+
+  // Restore the asserts (removes the mocking)
+  this.restoreAsserts();
+
+  assert.ok(this.pushedResults[0].result, '`expectDeprecation` captured deprecation for partial String match');
+  assert.notOk(this.pushedResults[1].result, '`expectDeprecation` didn\'t test a String match as RegExp');
+});
