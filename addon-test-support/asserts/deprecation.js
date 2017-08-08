@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
+import { checkMatcher } from '../-private/utils';
 
 
 export default function() {
@@ -18,7 +19,9 @@ export default function() {
   });
 
   function assertDeprecations(qunitAssert, matcher) {
-    let matchedDeprecations = deprecations.filter(deprecation => deprecation.message.match(matcher));
+    let matchedDeprecations = deprecations.filter(deprecation => {
+      return checkMatcher(deprecation.message, matcher);
+    });
     qunitAssert.pushResult({
       result: matchedDeprecations.length !== 0,
       actual: matchedDeprecations,

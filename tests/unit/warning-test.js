@@ -160,3 +160,36 @@ test('expectNoWarning called with callback and after test', function(assert) {
   assert.notOk(this.pushedResults[0].result, 'first `expectNoWarning` caught logged failed result');
   assert.ok(this.pushedResults[1].result, 'second `expectNoWarning` caught no warning');
 });
+
+
+test('expectWarning with regex matcher', function(assert) {
+  assert.expectWarning(() => {
+    Ember.warn('Something warned', false, { id: 'warning-test', until: '3.0.0' });
+  }, /Somethi[a-z ]*rned/);
+  assert.expectWarning(() => {
+    Ember.deprecate('/Something* warned/', false, { id: 'warning-test', until: '3.0.0' });
+  }, /Something* warned/);
+
+
+  // Restore the asserts (removes the mocking)
+  this.restoreAsserts();
+
+  assert.ok(this.pushedResults[0].result, '`expectWarning` matched RegExp');
+  assert.notOk(this.pushedResults[1].result, '`expectWarning` didn\'t RegExp as String match');
+});
+
+test('expectWarning with string matcher', function(assert) {
+  assert.expectWarning(() => {
+    Ember.warn('Something warned', false, { id: 'warning-test', until: '3.0.0' });
+  }, 'Something');
+
+  assert.expectWarning(() => {
+    Ember.warn('Something warned', false, { id: 'warning-test', until: '3.0.0' });
+  }, 'Something.*');
+
+  // Restore the asserts (removes the mocking)
+  this.restoreAsserts();
+
+  assert.ok(this.pushedResults[0].result, '`expectWarning` captured warning for partial string match');
+  assert.notOk(this.pushedResults[1].result, '`expectWarning` didn\'t test a string match as RegExp');
+});

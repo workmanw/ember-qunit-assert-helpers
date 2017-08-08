@@ -17,7 +17,7 @@ ember install ember-qunit-assert-helpers
 
 `assert.expectAssertion(callback, matcher)`
 
-Asserts that `Ember.assert` did throw an error. An optional regular expression matcher can be provided to match a specific error message.
+Asserts that `Ember.assert` did throw an error. An optional string or regular expression matcher can be provided to match a specific error message.
 
 ```javascript
 test('triggers Ember.assert', function(assert) {
@@ -50,7 +50,7 @@ test('`Ember.deprecate` was called anytime during the test and matched', functio
 
 `assert.expectDeprecation(callback, matcher)`
 
-Asserts that `Ember.deprecate` was called. An optional callback can be provided. An optional matcher can also be provided.
+Asserts that `Ember.deprecate` was called. An optional callback can be provided. An optional string or regular expression matcher can also be provided.
 
 ```javascript
 test('`Ember.deprecate` was called anytime during the test', function(assert) {

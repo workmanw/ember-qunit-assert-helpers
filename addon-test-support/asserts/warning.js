@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
+import { checkMatcher } from '../-private/utils';
 
 
 export default function() {
@@ -18,7 +19,9 @@ export default function() {
   });
 
   function assertWarnings(qunitAssert, matcher) {
-    let matchedWarnings = warnings.filter(warning => warning.message.match(matcher));
+    let matchedWarnings = warnings.filter(warning => {
+      return checkMatcher(warning.message, matcher);
+    });
     qunitAssert.pushResult({
       result: matchedWarnings.length !== 0,
       actual: matchedWarnings,
