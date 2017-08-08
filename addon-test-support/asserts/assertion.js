@@ -8,6 +8,8 @@ let TestAdapter = QUnitAdapter.extend({
   }
 });
 
+let noop = () => {};
+
 export default function() {
   let isProductionBuild = (function() {
     try {
@@ -22,7 +24,11 @@ export default function() {
   QUnit.assert.expectAssertion = function(cb, matcher) {
     // Save off the original adapter and replace it with a test one.
     let origTestAdapter = Ember.Test.adapter;
-    Ember.run(() => { Ember.Test.adapter = TestAdapter.create(); });
+    let origLoggerError = Ember.Logger.error;
+    Ember.run(() => {
+      Ember.Test.adapter = TestAdapter.create();
+      Ember.Logger.error = noop;
+    });
 
     let error = null;
     try {
@@ -56,6 +62,7 @@ export default function() {
     Ember.run(() => {
       Ember.Test.adapter.destroy();
       Ember.Test.adapter = origTestAdapter;
+      Ember.Logger.error = origLoggerError;
     });
   };
 }
