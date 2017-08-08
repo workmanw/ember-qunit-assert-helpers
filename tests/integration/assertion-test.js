@@ -28,10 +28,10 @@ test('Check for assert', function(assert) {
 });
 
 test('Does not log caught assertions', function(assert) {
-  let origTestemConsoleHandler = Testem.handleConsoleMessage;
+  let origLoggerError = Ember.Logger.error;
   try {
     let errorCalled = false;
-    Testem.handleConsoleMessage = () => {
+    Ember.Logger.error = () => {
       errorCalled = true;
     };
 
@@ -44,6 +44,6 @@ test('Does not log caught assertions', function(assert) {
 
     assert.equal(errorCalled, false, 'assertion was not logged');
   } finally {
-    Testem.handleConsoleMessage = origTestemConsoleHandler;
+    Ember.Logger.error = origLoggerError;
   }
 });
