@@ -10,6 +10,9 @@ Can be use in your application or an addon.
 ember install ember-qunit-assert-helpers
 ```
 
+## Compatibility
+
+This addon relies on functionality introduced in Ember 2.1. If you need support for Ember 2.0 and old, please also include [ember-debug-handlers-polyfill](https://github.com/rwjblue/ember-debug-handlers-polyfill).
 
 ## Usage
 
