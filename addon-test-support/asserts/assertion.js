@@ -12,6 +12,37 @@ let TestAdapter = QUnitAdapter.extend({
 
 let noop = () => {};
 
+function reset(origTestAdapter, origLoggerError) {
+  // Cleanup the test adapter and restore the original.
+  Ember.run(() => {
+    Ember.Test.adapter.destroy();
+    Ember.Test.adapter = origTestAdapter;
+    Ember.Logger.error = origLoggerError;
+  });
+}
+
+function handleError(syncErrorInCallback) {
+    let error = syncErrorInCallback || Ember.Test.adapter.lastError;
+    let isEmberError = error instanceof Ember.Error;
+    let matches = Boolean(isEmberError && checkMatcher(error.message, matcher));
+
+    if (isProductionBuild) {
+      this.pushResult({
+        result: true,
+        actual: null,
+        expected: null,
+        message: 'Assertions are disabled in production builds.'
+      });
+    } else {
+      this.pushResult({
+        result: isEmberError && matches,
+        actual: error && error.message,
+        expected: matcher,
+        message: matcher ? 'Ember.assert matched specific message' : 'Ember.assert called with any message'
+      });
+    }  
+}
+
 export default function() {
   let isProductionBuild = (function() {
     try {
@@ -33,38 +64,20 @@ export default function() {
     });
 
     let error = null;
+    let result;
     try {
-      cb();
+      result = cb();
     } catch (e) {
       error = e;
-    } finally {
-      error = error || Ember.Test.adapter.lastError;
     }
 
-    let isEmberError = error instanceof Ember.Error;
-    let matches = Boolean(isEmberError && checkMatcher(error.message, matcher));
-
-    if (isProductionBuild) {
-      this.pushResult({
-        result: true,
-        actual: null,
-        expected: null,
-        message: 'Assertions are disabled in production builds.'
-      });
-    } else {
-      this.pushResult({
-        result: isEmberError && matches,
-        actual: error && error.message,
-        expected: matcher,
-        message: matcher ? 'Ember.assert matched specific message' : 'Ember.assert called with any message'
-      });
+    if (result && typeof result.then === 'function') {
+      return result
+        .then(null, () => handleError(error))
+        .finally(() => cleanup(origTestAdapter, origLoggerError));
     }
+    
 
-    // Cleanup the test adapter and restore the original.
-    Ember.run(() => {
-      Ember.Test.adapter.destroy();
-      Ember.Test.adapter = origTestAdapter;
-      Ember.Logger.error = origLoggerError;
-    });
+    cleanup(origTestAdapter, origLoggerError);
   };
 }
