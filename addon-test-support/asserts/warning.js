@@ -4,6 +4,11 @@ import { checkMatcher } from '../-private/utils';
 
 
 export default function() {
+  if (!Ember.Debug.registerWarnHandler) {
+    // Ember.Debug.registerWarnHandler() does not exist in Ember 2.0 and below
+    // so assert.expectDeprecation() will not work in those cases.
+    return;
+  }
   let warnings;
 
   QUnit.testStart(function() {
