@@ -18,18 +18,18 @@ module('Assertion', function(hooks) {
     }));
   });
 
-  test('Check for assert', function(assert) {
-    assert.expectAssertion(() => {
-      render(hbs`{{x-assert-test}}`);
+  test('Check for assert', async function(assert) {
+    await assert.expectAssertion(() => {
+      return render(hbs`{{x-assert-test}}`);
     }, /x-assert-test will always assert/);
 
     // Restore the asserts (removes the mocking)
     this.restoreAsserts();
 
-    assert.ok(this.pushedResults[0].result, 'properly catured assertion');
+    assert.ok(this.pushedResults[0].result, 'properly captured assertion');
   });
 
-  test('Check for async assert', function(assert) {
+  test('Check for async assert', async function(assert) {
     this.owner.register('component:x-assert-async-test', Ember.Component.extend({
       init() {
         this._super();
@@ -43,14 +43,14 @@ module('Assertion', function(hooks) {
       }
     }));
 
-    assert.expectAssertion(async function() {
-      await render(hbs`{{x-assert-test}}`);
-    }, /x-assert-test will always assert/);
+    await assert.expectAssertion(() => {
+      return render(hbs`{{x-assert-async-test}}`);
+    }, /x-assert-async-test will asynchronously assert/);
 
     // Restore the asserts (removes the mocking)
     this.restoreAsserts();
 
-    assert.ok(this.pushedResults[0].result, '`expectWarning` captured warning call');
+    assert.ok(this.pushedResults[0].result, 'properly captured an async assertion');
   });
 
   test('Does not log caught assertions', function(assert) {
