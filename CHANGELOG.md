@@ -1,5 +1,10 @@
 # ember-qunit-assert-helpers Changelog
 
+
+### 0.2.1 (November 10th, 2017)
+
+- [#22](https://github.com/workmanw/ember-qunit-assert-helpers/pull/22) Update "ember-cli-babel" to v6.9.0 (@Turbo87)
+
 ### 0.2.0 (August 8th, 2017)
 
 - [#16](https://github.com/workmanw/ember-qunit-assert-helpers/pull/16) Matcher will use `includes` behavior for Strings and `match` behavior` for RegExp. Prevents strings with regex operators from incorrectly evaluated. (@workmanw, @MichalBryxi)
