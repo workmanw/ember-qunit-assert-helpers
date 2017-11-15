@@ -1,6 +1,4 @@
-/* jshint node:true */
-/* global require, module, __dirname */
-
+/* eslint-env node */
 'use strict';
 
 var Append = require('./lib/broccoli-append');
@@ -9,7 +7,7 @@ var path = require('path');
 module.exports = {
   name: 'ember-qunit-assert-helpers',
 
-  postprocessTree: function(type, tree) {
+  postprocessTree(type, tree) {
     this._requireBuildPackages();
     if (type === 'all' && this.app.tests) {
       var appendPath = path.join(__dirname, '/vendor/ember-qunit-assert-helpers-loader.js');
