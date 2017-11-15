@@ -53,7 +53,7 @@ module('Assertion', function(hooks) {
     assert.ok(this.pushedResults[0].result, 'properly captured an async assertion');
   });
 
-  test('Does not log caught assertions', function(assert) {
+  test('Does not log caught assertions', async function(assert) {
     let origLoggerError = Ember.Logger.error;
     try {
       let errorCalled = false;
@@ -61,8 +61,8 @@ module('Assertion', function(hooks) {
         errorCalled = true;
       };
 
-      assert.expectAssertion(() => {
-        render(hbs`{{x-assert-test}}`);
+      await assert.expectAssertion(() => {
+        return render(hbs`{{x-assert-test}}`);
       }, /x-assert-test will always assert/);
 
       // Restore the asserts (removes the mocking)
