@@ -13,6 +13,7 @@ module('Assertion', function(hooks) {
     this.owner.register('component:x-assert-test', Ember.Component.extend({
       init() {
         this._super();
+        debugger;
         Ember.assert('x-assert-test will always assert');
       }
     }));
@@ -22,7 +23,7 @@ module('Assertion', function(hooks) {
     await assert.expectAssertion(() => {
       return render(hbs`{{x-assert-test}}`);
     }, /x-assert-test will always assert/);
-
+    debugger;
     // Restore the asserts (removes the mocking)
     this.restoreAsserts();
 

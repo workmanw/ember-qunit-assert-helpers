@@ -58,6 +58,7 @@ export default function() {
 
   QUnit.assert.expectAssertion = function(cb, matcher) {
     // Save off the original adapter and replace it with a test one.
+    debugger;
     let origTestAdapter = Ember.Test.adapter;
     let origLoggerError = Ember.Logger.error;
     Ember.run(() => {
