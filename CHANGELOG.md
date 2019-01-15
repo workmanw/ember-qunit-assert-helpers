@@ -1,5 +1,8 @@
 # ember-qunit-assert-helpers Changelog
 
+### 0.2.2 (January 15th, 2018)
+
+- [#26](https://github.com/workmanw/ember-qunit-assert-helpers/issues/26) Fixed Ember CLI 3.7.x compatibility issue (@Turbo87)
 
 ### 0.2.1 (November 10th, 2017)
 
@@ -7,7 +10,7 @@
 
 ### 0.2.0 (August 8th, 2017)
 
-- [#16](https://github.com/workmanw/ember-qunit-assert-helpers/pull/16) Matcher will use `includes` behavior for Strings and `match` behavior` for RegExp. Prevents strings with regex operators from incorrectly evaluated. (@workmanw, @MichalBryxi)
+- [#16](https://github.com/workmanw/ember-qunit-assert-helpers/pull/16) Matcher will use `includes` behavior for Strings and `match` behavior for RegExp. Prevents strings with regex operators from incorrectly evaluated. (@workmanw, @MichalBryxi)
 - [#14](https://github.com/workmanw/ember-qunit-assert-helpers/pull/14) Prevent caught assertions from being logged. (@kturney)
 
 ### 0.1.3 (March 12th, 2017)
