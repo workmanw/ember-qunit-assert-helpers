@@ -1,49 +1,53 @@
 import Ember from 'ember';
-import { test } from 'ember-qunit';
-import moduleForAssert from '../helpers/module-for-assert';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
+import setupAssertTest from '../helpers/setup-assert-test';
 
-moduleForAssert('Assertion', { integration: false });
+module('Assertion', function(hooks) {
+  setupTest(hooks);
+  setupAssertTest(hooks);
 
-test('expectAssertion called with assert', function(assert) {
-  assert.expectAssertion(() => {
-    Ember.assert('testing assert');
+  test('expectAssertion called with assert', function(assert) {
+    assert.expectAssertion(() => {
+      Ember.assert('testing assert');
+    });
+
+    // Restore the asserts (removes the mocking)
+    this.restoreAsserts();
+
+    assert.ok(this.pushedResults[0].result, '`expectAssertion` captured deprecation call');
   });
 
-  // Restore the asserts (removes the mocking)
-  this.restoreAsserts();
+  test('expectAssertion called without deprecation', function(assert) {
+    assert.expectAssertion(() => {
+      Ember.assert('testing assert', true);
+    });
 
-  assert.ok(this.pushedResults[0].result, '`expectAssertion` captured deprecation call');
-});
+    // Restore the asserts (removes the mocking)
+    this.restoreAsserts();
 
-test('expectAssertion called without deprecation', function(assert) {
-  assert.expectAssertion(() => {
-    Ember.assert('testing assert', true);
+    assert.notOk(this.pushedResults[0].result, '`expectAssertion` logged failed result');
   });
 
-  // Restore the asserts (removes the mocking)
-  this.restoreAsserts();
+  test('expectAssertion called with deprecation and matched assert', function(assert) {
+    assert.expectAssertion(() => {
+      Ember.assert('testing assert');
+    }, /testing/);
 
-  assert.notOk(this.pushedResults[0].result, '`expectAssertion` logged failed result');
-});
+    // Restore the asserts (removes the mocking)
+    this.restoreAsserts();
 
-test('expectAssertion called with deprecation and matched assert', function(assert) {
-  assert.expectAssertion(() => {
-    Ember.assert('testing assert');
-  }, /testing/);
+    assert.ok(this.pushedResults[0].result, '`expectAssertion` captured deprecation call');
+  });
 
-  // Restore the asserts (removes the mocking)
-  this.restoreAsserts();
+  test('expectAssertion called with deprecation and unmatched assert', function(assert) {
+    assert.expectAssertion(() => {
+      Ember.assert('testing assert');
+    }, /different/);
 
-  assert.ok(this.pushedResults[0].result, '`expectAssertion` captured deprecation call');
-});
+    // Restore the asserts (removes the mocking)
+    this.restoreAsserts();
 
-test('expectAssertion called with deprecation and unmatched assert', function(assert) {
-  assert.expectAssertion(() => {
-    Ember.assert('testing assert');
-  }, /different/);
-
-  // Restore the asserts (removes the mocking)
-  this.restoreAsserts();
-
-  assert.notOk(this.pushedResults[0].result, '`expectAssertion` logged failed result');
+    assert.notOk(this.pushedResults[0].result, '`expectAssertion` logged failed result');
+  });
 });
