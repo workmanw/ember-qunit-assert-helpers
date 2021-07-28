@@ -1,4 +1,11 @@
-# ember-qunit-assert-helpers
+# ember-qunit-assert-helpers [Deprecated]
+
+This project is deprecated, in-favor of APIs provided directly from
+[ember-qunit](https://github.com/emberjs/ember-qunit) and
+[@ember/test-helpers](https://github.com/emberjs/ember-test-helpers).
+
+----
+
 
 This addon provides additional QUnit 2.0 assertions that are specific to Ember.js. It is meant to be a replacement for [ember-dev](https://github.com/emberjs/ember-dev) which only supports QUnit 1.0.
 
